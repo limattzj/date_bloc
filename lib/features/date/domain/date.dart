@@ -23,7 +23,7 @@ class Date extends Equatable {
 
     // if targetDate is in the future, result += 1
     return targetDate.isBefore(DateTime.now())
-        ? targetDate.difference(nextDay).inDays - 1
+        ? targetDate.difference(nextDay).inDays
         : targetDate.difference(nextDay).inDays + 1;
   }
 
