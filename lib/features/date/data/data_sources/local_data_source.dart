@@ -25,7 +25,7 @@ class DateLocalDataSourceImpl implements DateLocalDataSource {
   List<DateModel> getDatesFromCache() {
     final result = sharedPreferences.getString('CACHED_DATES');
     final jsonData = jsonDecode(result) as List;
-    print(jsonData);
+    print(result);
     final List<DateModel> results = [];
     for (final item in jsonData) {
       results.add(DateModel.fromJson(item as Map<String, dynamic>));
