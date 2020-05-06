@@ -1,4 +1,4 @@
-import 'package:date_bloc/features/date/domain/date.dart';
+import 'package:date_bloc/features/date/domain/entity/date.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -20,7 +20,7 @@ void main() {
   group('targetDate is in the future', () {
     test('should return 265 2020-05-04', () async {
       // arrange
-      DateTime startDate = DateTime.parse('2020-05-04');
+      final DateTime startDate = DateTime.parse('2020-05-04');
       final result = nextBday.getDaysDifference(
         startDate,
         nextBday.targetDate,
@@ -30,7 +30,7 @@ void main() {
     });
     test('should return 265 from 2020-05-04 18:04:00', () async {
       // arrange
-      DateTime startDate = DateTime.parse('2020-05-04 18:04:00');
+      final DateTime startDate = DateTime.parse('2020-05-04 18:04:00');
       // act
       final result = nextBday.getDaysDifference(startDate, nextBday.targetDate);
       // assert
@@ -41,7 +41,7 @@ void main() {
   group('targetDate is in the past', () {
     test('should return -9597 if from 1994-01-24', () async {
       // arrange
-      DateTime startDate = DateTime.parse('2020-05-04');
+      final DateTime startDate = DateTime.parse('2020-05-04');
       final result = firstBday.getDaysDifference(
         startDate,
         firstBday.targetDate,
@@ -51,7 +51,7 @@ void main() {
     });
     test('should return -9597 if from 1994-01-24 18:04:00', () async {
       // arrange
-      DateTime startDate = DateTime.parse('2020-05-04 18:04:00');
+      final DateTime startDate = DateTime.parse('2020-05-04 18:04:00');
       // act
       final result = firstBday.getDaysDifference(
         startDate,
