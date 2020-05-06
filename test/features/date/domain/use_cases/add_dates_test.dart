@@ -1,5 +1,5 @@
 import 'package:date_bloc/features/date/domain/entity/date.dart';
-import 'package:date_bloc/features/date/domain/use_cases/get_dates.dart';
+import 'package:date_bloc/features/date/domain/use_cases/add_dates.dart';
 import 'package:date_bloc/features/date/repository/date_repository.dart';
 import 'package:mockito/mockito.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -8,20 +8,22 @@ class MockDateRepository extends Mock implements DateRepository {}
 
 void main() {
   MockDateRepository mockDateRepository;
-  GetDates getDates;
+  AddDates addDates;
 
   setUp(() {
     mockDateRepository = MockDateRepository();
-    getDates = GetDates(repo: mockDateRepository);
+    addDates = AddDates(repo: mockDateRepository);
   });
 
-  test('should return a List of Date when call usecase', () async {
+  test('should return true if successfully added to local data source',
+      () async {
     // arrange
-    final List<Date> dates = [];
-    when(mockDateRepository.getDates()).thenAnswer((realInvocation) => dates);
+    List<Date> dates;
+    when(mockDateRepository.addDates(dates))
+        .thenAnswer((realInvocation) async => true);
     // act
-    final result = getDates();
+    final result = await addDates(dates);
     // assert
-    expect(result, dates);
+    expect(result, true);
   });
 }
