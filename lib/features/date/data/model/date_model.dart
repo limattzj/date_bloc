@@ -7,14 +7,14 @@ class DateModel extends Date {
     @required DateTime targetDate,
   }) : super(message: message, targetDate: targetDate);
 
-  factory DateModel.fromJson(Map<String, String> json) {
+  factory DateModel.fromJson(Map<String, dynamic> json) {
     return DateModel(
-      message: json['message'],
-      targetDate: DateTime.parse(json['targetDate']),
+      message: json['message'] as String,
+      targetDate: DateTime.parse(json['targetDate'] as String),
     );
   }
 
-  Map<String, String> toJson() {
+  Map<String, dynamic> toJson() {
     return {
       "message": message,
       "targetDate": targetDate.toString(),
