@@ -22,11 +22,11 @@ class DateBloc extends Bloc<DateEvent, DateState> {
   @override
   Stream<DateState> mapEventToState(DateEvent event) async* {
     if (event is AddDateEvent) {
-      yield DateLoading();
+      yield const DateLoading();
 
       // get data that already stored in shared preference
       final List<Date> dates = getDates();
-      print(dates.runtimeType);
+      // print(dates.runtimeType);
       results += dates;
 
       // add a new entry to the data already in shared preferences
@@ -42,7 +42,7 @@ class DateBloc extends Bloc<DateEvent, DateState> {
       }
     }
     if (event is GetDatesEvent) {
-      yield DateLoading();
+      yield const DateLoading();
       final dates = getDates();
       yield DateLoaded(dates);
     }

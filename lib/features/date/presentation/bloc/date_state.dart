@@ -21,8 +21,8 @@ class DateLoaded extends DateState {
   @override
   List<Object> get props {
     final results = [];
-    for (var item in dates) {
-      Map<String, dynamic> keyValuePair = {
+    for (final item in dates) {
+      final Map<String, dynamic> keyValuePair = {
         "message": item.message,
         "targetDate": item.targetDate.toString(),
       };

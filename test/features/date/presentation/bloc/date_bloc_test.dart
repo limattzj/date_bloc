@@ -17,7 +17,7 @@ void main() {
   DateLocalDataSourceImpl dateLocalDataSource;
   SharedPreferences sharedPreferences;
 
-  List<Date> resultDate = [
+  final List<Date> resultDate = [
     Date(
       message: 'upcoming birthday',
       targetDate: DateTime.parse('2021-01-24'),
@@ -42,7 +42,7 @@ void main() {
 
     test('initialState should be DateInitial', () async {
       // assert
-      expect(dateBloc.initialState, DateInitial());
+      expect(dateBloc.initialState, const DateInitial());
     });
 
     blocTest(
@@ -58,12 +58,12 @@ void main() {
         return dateBloc;
       },
       act: (bloc) async {
-        return dateBloc.add(GetDatesEvent());
+        return dateBloc.add(const GetDatesEvent());
       },
       skip: 0,
       expect: [
-        DateInitial(),
-        DateLoading(),
+        const DateInitial(),
+        const DateLoading(),
         DateLoaded(resultDate),
       ],
     );
@@ -104,8 +104,8 @@ void main() {
       },
       skip: 0,
       expect: [
-        DateInitial(),
-        DateLoading(),
+        const DateInitial(),
+        const DateLoading(),
         DateLoaded(result),
       ],
     );

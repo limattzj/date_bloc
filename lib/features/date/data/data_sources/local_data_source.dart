@@ -22,13 +22,13 @@ class DateLocalDataSourceImpl implements DateLocalDataSource {
 
   @override
   List<DateModel> getDatesFromCache() {
-    List<DateModel> results = [];
+    final List<DateModel> results = [];
     final cachedData = sharedPreferences.getString('CACHED_DATES');
     if (cachedData != null) {
       final jsonData = json.decode(cachedData) as List;
-        for (final item in jsonData) {
-          results.add(DateModel.fromJson(item as Map<String, dynamic>));
-        }
+      for (final item in jsonData) {
+        results.add(DateModel.fromJson(item as Map<String, dynamic>));
+      }
     }
     return results;
   }

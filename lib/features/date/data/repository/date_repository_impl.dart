@@ -23,8 +23,8 @@ class DateRepositoryImpl implements DateRepository {
 
   @override
   List<Date> getDates() {
-    List<Date> result =  localDataSource.getDatesFromCache();
-    print('result is of Type ${result.runtimeType} ');
+    final List<Date> result = localDataSource.getDatesFromCache();
+    //print('result is of Type ${result.runtimeType} ');
     return result;
   }
 }
