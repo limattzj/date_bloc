@@ -10,6 +10,7 @@ class DateRepositoryImpl implements DateRepository {
 
   @override
   Future<bool> addDates(List<Date> dates) {
+    // it loops through dates and transform items to type DateModel
     final List<DateModel> results = [];
     for (final date in dates) {
       results.add(DateModel(
@@ -22,6 +23,8 @@ class DateRepositoryImpl implements DateRepository {
 
   @override
   List<Date> getDates() {
-    return localDataSource.getDatesFromCache();
+    List<Date> result =  localDataSource.getDatesFromCache();
+    print('result is of Type ${result.runtimeType} ');
+    return result;
   }
 }

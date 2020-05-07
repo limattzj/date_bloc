@@ -19,5 +19,25 @@ class DateLoaded extends DateState {
 
   const DateLoaded(this.dates);
   @override
-  List<Object> get props => [dates];
+  List<Object> get props {
+    final results = [];
+    for (var item in dates) {
+      Map<String, dynamic> keyValuePair = {
+        "message": item.message,
+        "targetDate": item.targetDate.toString(),
+      };
+
+      results.add(keyValuePair);
+    }
+    return results;
+  }
+}
+
+class DateError extends DateState {
+  final String message;
+
+  const DateError({this.message});
+
+  @override
+  List<Object> get props => [message];
 }

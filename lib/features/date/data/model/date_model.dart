@@ -2,9 +2,12 @@ import 'package:date_bloc/features/date/domain/entity/date.dart';
 import 'package:meta/meta.dart';
 
 class DateModel extends Date {
-  const DateModel({
-    @required String message,
-    @required DateTime targetDate,
+  final String message;
+  final DateTime targetDate;
+
+  DateModel({
+    @required this.message,
+    @required this.targetDate,
   }) : super(message: message, targetDate: targetDate);
 
   factory DateModel.fromJson(Map<String, dynamic> json) {

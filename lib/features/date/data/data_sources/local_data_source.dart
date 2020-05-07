@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:date_bloc/features/date/data/model/date_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -23,12 +22,13 @@ class DateLocalDataSourceImpl implements DateLocalDataSource {
 
   @override
   List<DateModel> getDatesFromCache() {
-    final result = sharedPreferences.getString('CACHED_DATES');
-    final jsonData = jsonDecode(result) as List;
-    print(result);
-    final List<DateModel> results = [];
-    for (final item in jsonData) {
-      results.add(DateModel.fromJson(item as Map<String, dynamic>));
+    List<DateModel> results = [];
+    final cachedData = sharedPreferences.getString('CACHED_DATES');
+    if (cachedData != null) {
+      final jsonData = json.decode(cachedData) as List;
+        for (final item in jsonData) {
+          results.add(DateModel.fromJson(item as Map<String, dynamic>));
+        }
     }
     return results;
   }
