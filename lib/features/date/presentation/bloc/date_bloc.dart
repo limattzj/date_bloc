@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:date_bloc/features/date/domain/entity/date.dart';
-import 'package:date_bloc/features/date/domain/use_cases/add_dates.dart';
-import 'package:date_bloc/features/date/domain/use_cases/get_dates.dart';
+import 'package:date_bloc/features/date/domain/repository/date_repository.dart';
 import 'package:meta/meta.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -11,10 +10,9 @@ part 'date_state.dart';
 
 class DateBloc extends Bloc<DateEvent, DateState> {
   List<Date> results = [];
-  final AddDates addDates;
-  final GetDates getDates;
+  final DateRepository repo;
 
-  DateBloc({@required this.addDates, @required this.getDates});
+  DateBloc({@required this.repo});
 
   @override
   DateState get initialState => const DateInitial();
@@ -25,8 +23,8 @@ class DateBloc extends Bloc<DateEvent, DateState> {
       yield const DateLoading();
 
       // get data that already stored in shared preference
-      final List<Date> dates = getDates();
-      // print(dates.runtimeType);
+      final List<Date> dates = repo.getDates();
+      print(dates.runtimeType);
       results += dates;
 
       // add a new entry to the data already in shared preferences
@@ -36,14 +34,14 @@ class DateBloc extends Bloc<DateEvent, DateState> {
       ));
 
       // add results to shared preferences
-      final resultBool = await addDates(results);
+      final resultBool = await repo.addDates(results);
       if (resultBool) {
         yield DateLoaded(results);
       }
     }
     if (event is GetDatesEvent) {
       yield const DateLoading();
-      final dates = getDates();
+      final dates = repo.getDates();
       yield DateLoaded(dates);
     }
   }

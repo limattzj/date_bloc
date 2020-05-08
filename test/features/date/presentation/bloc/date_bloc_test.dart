@@ -2,8 +2,6 @@ import 'package:date_bloc/features/date/data/data_sources/local_data_source.dart
 import 'package:date_bloc/features/date/data/model/date_model.dart';
 import 'package:date_bloc/features/date/data/repository/date_repository_impl.dart';
 import 'package:date_bloc/features/date/domain/entity/date.dart';
-import 'package:date_bloc/features/date/domain/use_cases/add_dates.dart';
-import 'package:date_bloc/features/date/domain/use_cases/get_dates.dart';
 import 'package:date_bloc/features/date/presentation/bloc/date_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:bloc_test/bloc_test.dart';
@@ -11,8 +9,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   DateBloc dateBloc;
-  AddDates addDates;
-  GetDates getDates;
   DateRepositoryImpl dateRepositoryImpl;
   DateLocalDataSourceImpl dateLocalDataSource;
   SharedPreferences sharedPreferences;
@@ -34,10 +30,8 @@ void main() {
       // repo
       dateRepositoryImpl = DateRepositoryImpl(dateLocalDataSource);
       // use case
-      addDates = AddDates(repo: dateRepositoryImpl);
-      getDates = GetDates(repo: dateRepositoryImpl);
       // bloc
-      dateBloc = DateBloc(addDates: addDates, getDates: getDates);
+      dateBloc = DateBloc(repo: dateRepositoryImpl);
     });
 
     test('initialState should be DateInitial', () async {
@@ -78,11 +72,9 @@ void main() {
       dateLocalDataSource = DateLocalDataSourceImpl(sharedPreferences);
       // repo
       dateRepositoryImpl = DateRepositoryImpl(dateLocalDataSource);
-      // use case
-      addDates = AddDates(repo: dateRepositoryImpl);
-      getDates = GetDates(repo: dateRepositoryImpl);
+
       // bloc
-      dateBloc = DateBloc(addDates: addDates, getDates: getDates);
+      dateBloc = DateBloc(repo: dateRepositoryImpl);
     });
 
     final firstBday = Date(
