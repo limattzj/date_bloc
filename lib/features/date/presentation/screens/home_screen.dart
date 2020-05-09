@@ -3,8 +3,6 @@ import 'package:date_bloc/features/date/presentation/screens/add_date_screen.dar
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../dependency_injector.dart';
-
 class MyHomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -15,10 +13,14 @@ class MyHomeScreen extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.add),
             onPressed: () {
+              final dateBloc = BlocProvider.of<DateBloc>(context);
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => AddDateScreen(),
+                    builder: (context) => BlocProvider.value(
+                      value: dateBloc,
+                      child: AddDateScreen(),
+                    ),
                   ));
             },
           )
@@ -26,21 +28,36 @@ class MyHomeScreen extends StatelessWidget {
       ),
       body: BlocBuilder<DateBloc, DateState>(builder: (context, state) {
         if (state is DateLoaded) {
-          return ListView.builder(
+          return ListView.separated(
             itemBuilder: (context, index) {
-              return Container(
-                child: Column(
-                  children: <Widget>[
-                    Text(state.dates[index].message),
-                    Text('${state.dates[index].targetDate}'),
-                  ],
+              return GestureDetector(
+                onTap: () {
+                  print('this is at position $index');
+                },
+                child: Container(
+                  width: 300,
+                  height: 100,
+                  color: Colors.orangeAccent,
+                  child: Column(
+                    children: <Widget>[
+                      Text(state.dates[index].message),
+                      Text('${state.dates[index].targetDate}'),
+                    ],
+                  ),
                 ),
               );
             },
+            separatorBuilder: (context, index) => Divider(),
             itemCount: state.dates.length,
           );
         }
-        if (state is DateError) {}
+        if (state is DateError) {
+          return Center(
+            child: Container(
+              child: Text('error'),
+            ),
+          );
+        }
         return Container(
           color: Colors.redAccent,
         );

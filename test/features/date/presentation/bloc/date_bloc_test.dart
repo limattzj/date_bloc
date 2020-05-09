@@ -20,20 +20,35 @@ void main() {
     )
   ];
 
-  group('GetDatesEvent', () {
-    setUp(() async {
-      // shared preference
-      SharedPreferences.setMockInitialValues({});
-      sharedPreferences = await SharedPreferences.getInstance();
-      // local data source
-      dateLocalDataSource = DateLocalDataSourceImpl(sharedPreferences);
-      // repo
-      dateRepositoryImpl = DateRepositoryImpl(dateLocalDataSource);
-      // use case
-      // bloc
-      dateBloc = DateBloc(repo: dateRepositoryImpl);
-    });
+  final DateModel birthday = DateModel(
+    message: 'upcoming birthday',
+    targetDate: DateTime.parse('2021-01-24'),
+  );
+  final DateModel newYear = DateModel(
+    message: 'new year',
+    targetDate: DateTime.parse('2021-01-01'),
+  );
 
+  final DateModel oldYear = DateModel(
+    message: 'old year',
+    targetDate: DateTime.parse('1000-01-01'),
+  );
+
+  final List<Date> emptyDate = [];
+  setUp(() async {
+    // shared preference
+    SharedPreferences.setMockInitialValues({});
+    sharedPreferences = await SharedPreferences.getInstance();
+    // local data source
+    dateLocalDataSource = DateLocalDataSourceImpl(sharedPreferences);
+    // repo
+    dateRepositoryImpl = DateRepositoryImpl(dateLocalDataSource);
+    // use case
+    // bloc
+    dateBloc = DateBloc(repo: dateRepositoryImpl);
+  });
+
+  group('GetDatesEvent', () {
     test('initialState should be DateInitial', () async {
       // assert
       expect(dateBloc.initialState, const DateInitial());
@@ -64,19 +79,6 @@ void main() {
   });
 
   group('AddDateEvent', () {
-    setUp(() async {
-      // shared preference
-      SharedPreferences.setMockInitialValues({});
-      sharedPreferences = await SharedPreferences.getInstance();
-      // local data source
-      dateLocalDataSource = DateLocalDataSourceImpl(sharedPreferences);
-      // repo
-      dateRepositoryImpl = DateRepositoryImpl(dateLocalDataSource);
-
-      // bloc
-      dateBloc = DateBloc(repo: dateRepositoryImpl);
-    });
-
     final firstBday = Date(
       message: 'my first birthday',
       targetDate: DateTime.parse('1994-01-24'),
@@ -99,6 +101,61 @@ void main() {
         const DateInitial(),
         const DateLoading(),
         DateLoaded(result),
+      ],
+    );
+  });
+
+  group('DeleteDateEvent', () {
+    blocTest(
+      'should return DateInitial, DateLoading, DateLoaded, DateLoading, DateLoaded',
+      build: () async {
+        final DateModel birthday = DateModel(
+          message: 'upcoming birthday',
+          targetDate: DateTime.parse('2021-01-24'),
+        );
+        final listToCache = [birthday];
+        dateLocalDataSource.cacheDates(listToCache);
+        return dateBloc;
+      },
+      act: (bloc) async {
+        dateBloc.add(const GetDatesEvent());
+        return dateBloc.add(const DeleteDateEvent(index: 0));
+      },
+      skip: 0,
+      expect: [
+        DateInitial(),
+        DateLoading(),
+        DateLoaded(resultDate),
+        DateLoading(),
+        DateLoaded(emptyDate),
+      ],
+    );
+  });
+
+  group('EditDateEvent', () {
+    blocTest(
+      'should return DateInitial, DateLoading, DateLoaded, DateLoading, DateLoaded',
+      build: () async {
+        final listToCache = [birthday, newYear];
+        // save listToCache to shared preference
+        dateLocalDataSource.cacheDates(listToCache);
+        return dateBloc;
+      },
+      act: (bloc) async {
+        dateBloc.add(const GetDatesEvent());
+        return dateBloc.add(EditDateEvent(
+          index: 1,
+          message: 'old year',
+          date: DateTime.parse('1000-01-01'),
+        ));
+      },
+      skip: 0,
+      expect: [
+        DateInitial(),
+        DateLoading(),
+        DateLoaded([birthday, newYear]),
+        DateLoading(),
+        DateLoaded([birthday, oldYear]),
       ],
     );
   });

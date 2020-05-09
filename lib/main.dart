@@ -16,10 +16,10 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => sl<DateBloc>()..add(GetDatesEvent()),
-      child: MaterialApp(
-        home: MyHomeScreen(),
+    return MaterialApp(
+      home: BlocProvider(
+        create: (context) => sl<DateBloc>(),
+        child: MyHomeScreen(),
       ),
     );
   }

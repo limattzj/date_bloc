@@ -18,6 +18,7 @@ class DateLoaded extends DateState {
   final List<Date> dates;
 
   const DateLoaded(this.dates);
+
   @override
   List<Object> get props {
     final results = [];
@@ -30,6 +31,20 @@ class DateLoaded extends DateState {
       results.add(keyValuePair);
     }
     return results;
+  }
+
+  @override
+  String toString() {
+    final List<String> results = [];
+    for (final item in dates) {
+      final Map<String, dynamic> keyValuePair = {
+        "message": item.message,
+        "targetDate": item.targetDate.toString(),
+      };
+
+      results.add(jsonEncode(keyValuePair));
+    }
+    return results.toString();
   }
 }
 

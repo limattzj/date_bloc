@@ -13,37 +13,43 @@ class _AddDateScreenState extends State<AddDateScreen> {
   DateTime date;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: Column(
-        children: <Widget>[
-          Event(controller: controller),
-          DateChooser(
-              date: date,
-              onConfirm: (time) {
-                setState(() {
-                  date = time;
-                });
-              }),
-          FlatButton(
-            onPressed: () {
-              BlocProvider.of<DateBloc>(context).add(AddDateEvent(
-                message: 'abc',
-                date: date,
-              ));
-            },
-            child: Text('Save'),
-            color: Colors.orangeAccent,
+    return BlocBuilder<DateBloc, DateState>(
+      builder: (context, state) {
+        return Scaffold(
+          appBar: AppBar(),
+          body: Column(
+            children: <Widget>[
+              Event(controller: controller),
+              DateSelect(
+                  date: date,
+                  onConfirm: (time) {
+                    setState(() {
+                      date = time;
+                    });
+                  }),
+              FlatButton(
+                onPressed: () {
+                  BlocProvider.of<DateBloc>(context).add(
+                    AddDateEvent(
+                      message: 'abc',
+                      date: date,
+                    ),
+                  );
+                },
+                child: Text('Save'),
+                color: Colors.orangeAccent,
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
 
-class DateChooser extends StatelessWidget {
+class DateSelect extends StatelessWidget {
   final Function onConfirm;
-  const DateChooser({
+  const DateSelect({
     Key key,
     @required this.date,
     this.onConfirm,
