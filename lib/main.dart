@@ -17,8 +17,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData.dark(),
       home: BlocProvider(
-        create: (context) => sl<DateBloc>(),
+        create: (context) => sl<DateBloc>()..add(GetDates()),
         child: MyHomeScreen(),
       ),
     );

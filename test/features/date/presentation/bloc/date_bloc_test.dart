@@ -13,27 +13,6 @@ void main() {
   DateLocalDataSourceImpl dateLocalDataSource;
   SharedPreferences sharedPreferences;
 
-  final List<Date> resultDate = [
-    Date(
-      message: 'upcoming birthday',
-      targetDate: DateTime.parse('2021-01-24'),
-    )
-  ];
-
-  final DateModel birthday = DateModel(
-    message: 'upcoming birthday',
-    targetDate: DateTime.parse('2021-01-24'),
-  );
-  final DateModel newYear = DateModel(
-    message: 'new year',
-    targetDate: DateTime.parse('2021-01-01'),
-  );
-
-  final DateModel oldYear = DateModel(
-    message: 'old year',
-    targetDate: DateTime.parse('1000-01-01'),
-  );
-
   final List<Date> emptyDate = [];
   setUp(() async {
     // shared preference
@@ -49,13 +28,31 @@ void main() {
   });
 
   group('GetDatesEvent', () {
+    final List<Date> resultDate = [
+      Date(
+        message: 'upcoming birthday',
+        targetDate: DateTime.parse('2021-01-24'),
+      )
+    ];
     test('initialState should be DateInitial', () async {
       // assert
       expect(dateBloc.initialState, const DateInitial());
     });
 
     blocTest(
-      'should get a List of Date when add GetDatesEvent',
+      'should get an empty list',
+      build: () async => dateBloc,
+      act: (bloc) async => dateBloc.add(const GetDates()),
+      skip: 0,
+      expect: [
+        const DateInitial(),
+        const DateLoading(),
+        DateLoaded([]),
+      ],
+    );
+
+    blocTest(
+      'should get a list of Date objects',
       build: () async {
         // cache the data using local data source
         final DateModel birthday = DateModel(
@@ -63,12 +60,11 @@ void main() {
           targetDate: DateTime.parse('2021-01-24'),
         );
         final listToCache = [birthday];
+        // calling local data source to store data
         dateLocalDataSource.cacheDates(listToCache);
         return dateBloc;
       },
-      act: (bloc) async {
-        return dateBloc.add(const GetDatesEvent());
-      },
+      act: (bloc) async => dateBloc.add(const GetDates()),
       skip: 0,
       expect: [
         const DateInitial(),
@@ -91,7 +87,7 @@ void main() {
         return dateBloc;
       },
       act: (bloc) async {
-        dateBloc.add(AddDateEvent(
+        dateBloc.add(CreateDate(
           message: 'my first birthday',
           date: DateTime.parse('1994-01-24'),
         ));
@@ -103,9 +99,27 @@ void main() {
         DateLoaded(result),
       ],
     );
+
+    blocTest(
+      'should return DateError is input is null',
+      build: () async => dateBloc,
+      act: (bloc) async => dateBloc.add(CreateDate(message: '', date: null)),
+      skip: 0,
+      expect: [
+        const DateInitial(),
+        const DateLoading(),
+        DateError(message: 'date cannot be null'),
+      ],
+    );
   });
 
   group('DeleteDateEvent', () {
+    final List<Date> resultDate = [
+      Date(
+        message: 'upcoming birthday',
+        targetDate: DateTime.parse('2021-01-24'),
+      )
+    ];
     blocTest(
       'should return DateInitial, DateLoading, DateLoaded, DateLoading, DateLoaded',
       build: () async {
@@ -118,8 +132,8 @@ void main() {
         return dateBloc;
       },
       act: (bloc) async {
-        dateBloc.add(const GetDatesEvent());
-        return dateBloc.add(const DeleteDateEvent(index: 0));
+        dateBloc.add(const GetDates());
+        return dateBloc.add(const DeleteDate(index: 0));
       },
       skip: 0,
       expect: [
@@ -132,9 +146,23 @@ void main() {
     );
   });
 
-  group('EditDateEvent', () {
+  group('UpdateDate', () {
+    final DateModel birthday = DateModel(
+      message: 'upcoming birthday',
+      targetDate: DateTime.parse('2021-01-24'),
+    );
+    final DateModel newYear = DateModel(
+      message: 'new year',
+      targetDate: DateTime.parse('2021-01-01'),
+    );
+
+    final DateModel oldYear = DateModel(
+      message: 'old year',
+      targetDate: DateTime.parse('1000-01-01'),
+    );
+
     blocTest(
-      'should return DateInitial, DateLoading, DateLoaded, DateLoading, DateLoaded',
+      'should update items at index 1',
       build: () async {
         final listToCache = [birthday, newYear];
         // save listToCache to shared preference
@@ -142,8 +170,8 @@ void main() {
         return dateBloc;
       },
       act: (bloc) async {
-        dateBloc.add(const GetDatesEvent());
-        return dateBloc.add(EditDateEvent(
+        dateBloc.add(const GetDates());
+        return dateBloc.add(UpdateDate(
           index: 1,
           message: 'old year',
           date: DateTime.parse('1000-01-01'),

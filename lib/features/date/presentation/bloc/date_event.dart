@@ -6,34 +6,33 @@ abstract class DateEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class GetDatesEvent extends DateEvent {
-  const GetDatesEvent();
+class GetDates extends DateEvent {
+  const GetDates();
 }
 
-class AddDateEvent extends DateEvent {
+class CreateDate extends DateEvent {
   final String message;
   final DateTime date;
 
-  const AddDateEvent({@required this.message, @required this.date});
+  const CreateDate({@required this.message, @required this.date});
   @override
   List<Object> get props => [message, date];
 }
 
-class EditDateEvent extends DateEvent {
+class UpdateDate extends DateEvent {
   final int index;
   final String message;
   final DateTime date;
 
-  const EditDateEvent(
-      {this.index, @required this.message, @required this.date});
+  const UpdateDate({this.index, @required this.message, @required this.date});
   @override
   List<Object> get props => [message, date];
 }
 
-class DeleteDateEvent extends DateEvent {
+class DeleteDate extends DateEvent {
   final int index;
 
-  const DeleteDateEvent({@required this.index});
+  const DeleteDate({@required this.index});
 
   @override
   List<Object> get props => [index];

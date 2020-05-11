@@ -17,21 +17,27 @@ class DateBloc extends Bloc<DateEvent, DateState> {
   @override
   DateState get initialState => const DateInitial();
 
-  @override
-  void onTransition(Transition<DateEvent, DateState> transition) {
-    super.onTransition(transition);
-    print(transition);
-  }
+  // for debugging
+  // @override
+  // void onTransition(Transition<DateEvent, DateState> transition) {
+  //   super.onTransition(transition);
+  //   print(transition);
+  // }
+
+  // @override
+  // void onError(Object error, StackTrace stackTrace) {
+  //   super.onError(error, stackTrace);
+  //   print('$error, $stackTrace');
+  // }
 
   @override
   Stream<DateState> mapEventToState(DateEvent event) async* {
-    if (event is AddDateEvent) {
+    // Add Date
+    if (event is CreateDate) {
       List<Date> results = [];
       yield const DateLoading();
       // verify input, to make sure AddDateEvent is not null
-      if (event.date == null) {
-        yield DateError(message: 'date cannot be null');
-      } else {
+      if (event.date != null) {
         // get data that already stored in shared preference
         results += repo.getDates();
 
@@ -45,46 +51,43 @@ class DateBloc extends Bloc<DateEvent, DateState> {
         } else {
           yield DateError(message: 'Failed to cache data');
         }
+      } else {
+        yield DateError(message: 'date cannot be null');
       }
     }
-    if (event is GetDatesEvent) {
+    // GetDates
+    if (event is GetDates) {
       yield const DateLoading();
       final dates = repo.getDates();
       yield DateLoaded(dates);
     }
-    if (event is DeleteDateEvent) {
+    // Delete Date
+    if (event is DeleteDate) {
       yield DateLoading();
       List<Date> dates = repo.getDates();
       if (dates.isNotEmpty) {
         dates.removeAt(event.index);
       }
-      final resultBool = await repo.addDates(dates);
-      if (resultBool) {
-        yield DateLoaded(dates);
-      } else {
-        yield DateError(message: 'Failed to cache data');
-      }
+      yield await repo.addDates(dates)
+          ? DateLoaded(dates)
+          : DateError(message: 'Failed to cache data');
     }
-    if (event is EditDateEvent) {
+
+    // Edit Date
+    if (event is UpdateDate) {
       List<Date> results = [];
       yield DateLoading();
-      List<Date> dates = repo.getDates();
-      if (dates.isNotEmpty) {
-        results += dates;
-        // override Date tostring method
-        // and check what is printed here
+      results += repo.getDates();
+      if (results.isNotEmpty) {
         Date newEntry = Date(message: event.message, targetDate: event.date);
-
-        // what happended here
+        // we update the old entry with new
         results[event.index] = newEntry;
         print(results);
       }
-      final resultBool = await repo.addDates(results);
-      if (resultBool) {
-        yield DateLoaded(results);
-      } else {
-        yield DateError(message: 'Failed to cache data');
-      }
+
+      yield await repo.addDates(results)
+          ? DateLoaded(results)
+          : DateError(message: 'Failed to cache data');
     }
   }
 }

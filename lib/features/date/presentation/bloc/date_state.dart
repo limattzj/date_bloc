@@ -55,4 +55,9 @@ class DateError extends DateState {
 
   @override
   List<Object> get props => [message];
+
+  @override
+  String toString() {
+    return 'DateError: {$message}';
+  }
 }
