@@ -5,7 +5,9 @@ class Date extends Equatable {
   final DateTime targetDate;
   const Date({this.message, this.targetDate});
 
-  /// return numbers of days left from tomorrow 00:00 to targetDate 00:00
+  /// Return numbers of days left from [tomorrow 00:00] to [targetDate 00:00].
+  /// This getter cannot be test because it finds a difference between
+  /// [targetDate] and [now], and [now] is always changing.
   int get daysDifference {
     return getDaysDifference(
       DateTime.now(),
