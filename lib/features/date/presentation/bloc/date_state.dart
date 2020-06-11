@@ -25,7 +25,7 @@ class DateLoaded extends DateState {
     for (final item in dates) {
       final Map<String, dynamic> keyValuePair = {
         "message": item.message,
-        "targetDate": item.targetDate.toString(),
+        "targetDate": item.endDate.toString(),
       };
 
       results.add(keyValuePair);
@@ -39,7 +39,7 @@ class DateLoaded extends DateState {
     for (final item in dates) {
       final Map<String, dynamic> keyValuePair = {
         "message": item.message,
-        "targetDate": item.targetDate.toString(),
+        "targetDate": item.endDate.toString(),
       };
 
       results.add(jsonEncode(keyValuePair));

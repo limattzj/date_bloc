@@ -15,7 +15,7 @@ class DateRepositoryImpl implements DateRepository {
     for (final date in dates) {
       results.add(DateModel(
         message: date.message,
-        targetDate: date.targetDate,
+        endDate: date.endDate,
       ));
     }
     return localDataSource.cacheDates(results);

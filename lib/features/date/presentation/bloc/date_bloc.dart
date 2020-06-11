@@ -42,7 +42,7 @@ class DateBloc extends Bloc<DateEvent, DateState> {
         results += repo.getDates();
 
         // add a new entry to the data already in shared preferences
-        results.add(Date(message: event.message, targetDate: event.date));
+        results.add(Date(message: event.message, endDate: event.date));
 
         // add results to shared preferences
         final resultBool = await repo.addDates(results);
@@ -79,7 +79,7 @@ class DateBloc extends Bloc<DateEvent, DateState> {
       yield DateLoading();
       results += repo.getDates();
       if (results.isNotEmpty) {
-        Date newEntry = Date(message: event.message, targetDate: event.date);
+        Date newEntry = Date(message: event.message, endDate: event.date);
         // we update the old entry with new
         results[event.index] = newEntry;
         print(results);
