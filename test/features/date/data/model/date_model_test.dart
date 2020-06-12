@@ -1,8 +1,18 @@
 import 'package:date_bloc/features/date/data/model/date_model.dart';
-import 'package:flutter/material.dart';
+import 'package:date_bloc/features/date/domain/entity/date.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  test('is a subclass of Date', () async {
+    // arrange
+    final date = DateModel(
+      message: 'hello',
+      endDate: DateTime.parse('2020-01-01'),
+    );
+    // act
+    expect(date, isA<Date>());
+    // assert
+  });
   group('fromJson', () {
     test('should return a DateModel object', () async {
       // arrange

@@ -12,7 +12,9 @@ Future<void> init() async {
   // bloc
   sl.registerFactory(() => DateBloc(repo: sl()));
 
-  sl.registerLazySingleton<DateRepository>(() => DateRepositoryImpl(sl()));
+  sl.registerLazySingleton<DateRepository>(
+    () => DateRepositoryImpl(localDataSource: sl()),
+  );
 
   sl.registerLazySingleton<DateLocalDataSource>(
       () => DateLocalDataSourceImpl(sl()));
