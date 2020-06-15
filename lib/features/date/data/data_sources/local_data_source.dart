@@ -11,6 +11,8 @@ class DateLocalDataSourceImpl implements DateLocalDataSource {
   final SharedPreferences sharedPreferences;
 
   DateLocalDataSourceImpl(this.sharedPreferences);
+
+  // from List<DateModel> to String using sharedPreferences
   @override
   Future<bool> cacheDates(List<DateModel> dates) {
     final List<String> dataToCache = [];
@@ -20,6 +22,7 @@ class DateLocalDataSourceImpl implements DateLocalDataSource {
     return sharedPreferences.setString('CACHED_DATES', dataToCache.toString());
   }
 
+  // get String from sharedPreferences and convert to List<DateModel>
   @override
   List<DateModel> getDatesFromCache() {
     final List<DateModel> results = [];

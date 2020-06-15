@@ -19,3 +19,7 @@ final dataModel02 = DateModel(
   message: 'canada day',
   endDate: DateTime.parse('2020-07-01'),
 );
+
+final tDates = [dataModel01, dataModel02];
+final tResults =
+    '''[{"message":"new year","endDate":"2020-01-01 00:00:00.000"}, {"message":"canada day","endDate":"2020-07-01 00:00:00.000"}]''';
