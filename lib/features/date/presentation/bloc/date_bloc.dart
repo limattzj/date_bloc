@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 import 'package:date_bloc/features/date/domain/entity/date.dart';
 import 'package:date_bloc/features/date/domain/repository/date_repository.dart';
 import 'package:meta/meta.dart';
@@ -18,24 +17,24 @@ class DateBloc extends Bloc<DateEvent, DateState> {
   DateState get initialState => const DateInitial();
 
   // for debugging
-  // @override
-  // void onTransition(Transition<DateEvent, DateState> transition) {
-  //   super.onTransition(transition);
-  //   print(transition);
-  // }
+  @override
+  void onTransition(Transition<DateEvent, DateState> transition) {
+    super.onTransition(transition);
+    print(transition);
+  }
 
-  // @override
-  // void onError(Object error, StackTrace stackTrace) {
-  //   super.onError(error, stackTrace);
-  //   print('$error, $stackTrace');
-  // }
+  @override
+  void onError(Object error, StackTrace stackTrace) {
+    super.onError(error, stackTrace);
+    print('$error, $stackTrace');
+  }
 
   @override
   Stream<DateState> mapEventToState(DateEvent event) async* {
     // Add Date
     if (event is CreateDate) {
       List<Date> results = [];
-      yield const DateLoading();
+      yield DateLoading();
       // verify input, to make sure AddDateEvent is not null
       if (event.date != null) {
         // get data that already stored in shared preference
@@ -46,8 +45,11 @@ class DateBloc extends Bloc<DateEvent, DateState> {
 
         // add results to shared preferences
         final resultBool = await repo.addDates(results);
+
         if (resultBool) {
           yield DateLoaded(results);
+          print('next line is return');
+          return;
         } else {
           yield DateError(message: 'Failed to cache data');
         }

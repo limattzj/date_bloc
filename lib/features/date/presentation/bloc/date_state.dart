@@ -2,50 +2,32 @@ part of 'date_bloc.dart';
 
 abstract class DateState extends Equatable {
   const DateState();
-  @override
-  List<Object> get props => [];
 }
 
 class DateInitial extends DateState {
   const DateInitial();
+  @override
+  List<Object> get props => [];
 }
 
 class DateLoading extends DateState {
   const DateLoading();
+  @override
+  List<Object> get props => [];
 }
 
 class DateLoaded extends DateState {
   final List<Date> dates;
 
-  const DateLoaded(this.dates);
-
-  @override
-  List<Object> get props {
-    final results = [];
-    for (final item in dates) {
-      final Map<String, dynamic> keyValuePair = {
-        "message": item.message,
-        "targetDate": item.endDate.toString(),
-      };
-
-      results.add(keyValuePair);
-    }
-    return results;
-  }
+  DateLoaded(this.dates);
 
   @override
   String toString() {
-    final List<String> results = [];
-    for (final item in dates) {
-      final Map<String, dynamic> keyValuePair = {
-        "message": item.message,
-        "targetDate": item.endDate.toString(),
-      };
-
-      results.add(jsonEncode(keyValuePair));
-    }
-    return results.toString();
+    return 'DateLoaded: {${dates.length}}';
   }
+
+  @override
+  List<Object> get props => [];
 }
 
 class DateError extends DateState {
