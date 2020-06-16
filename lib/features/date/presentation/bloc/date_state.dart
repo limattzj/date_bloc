@@ -23,11 +23,11 @@ class DateLoaded extends DateState {
 
   @override
   String toString() {
-    return 'DateLoaded: {${dates.length}}';
+    return 'DateLoaded: {$dates}';
   }
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [dates];
 }
 
 class DateError extends DateState {
