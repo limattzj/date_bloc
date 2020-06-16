@@ -27,7 +27,17 @@ class DateLoaded extends DateState {
   }
 
   @override
-  List<Object> get props => [dates];
+  List<Object> get props {
+    final List<Map> results = [];
+    for (var item in dates) {
+      final Map<String, dynamic> entry = {
+        "message": item.message,
+        "endDate": item.endDate,
+      };
+      results.add(entry);
+    }
+    return results;
+  }
 }
 
 class DateError extends DateState {

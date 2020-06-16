@@ -46,15 +46,6 @@ void main() {
       ],
     );
 
-    test('should return equal for DateLoaded with two similar values',
-        () async {
-      // arrange
-      final tList1 = [data01, data02];
-      final tList2 = [data01, data02];
-      // act
-      // assert
-      expect(DateLoaded(tList2), DateLoaded(tList1));
-    });
     blocTest(
       'should return when createEvent is added 2x',
       build: () async {
@@ -76,5 +67,23 @@ void main() {
         DateLoaded([data03, data02]),
       ],
     );
+
+    test('should emits ', () async {
+      // arrange
+      dateBloc.add(
+          CreateDate(message: 'new year', date: DateTime.parse('2021-01-01')));
+      dateBloc.add(CreateDate(
+          message: 'canada day', date: DateTime.parse('2020-07-01')));
+      // act
+      final expected = [
+        DateInitial(),
+        DateLoading(),
+        DateLoaded([data03]),
+        DateLoading(),
+        DateLoaded([data03, data02]),
+      ];
+      // assert
+      await emitsExactly(dateBloc, expected, skip: 0);
+    });
   });
 }
