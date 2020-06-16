@@ -24,7 +24,11 @@ class UpdateDate extends DateEvent {
   final String message;
   final DateTime date;
 
-  const UpdateDate({this.index, @required this.message, @required this.date});
+  const UpdateDate({
+    @required this.index,
+    @required this.message,
+    @required this.date,
+  });
   @override
   List<Object> get props => [message, date];
 }

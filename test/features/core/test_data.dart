@@ -14,6 +14,10 @@ final data03 = Date(
   message: 'new year',
   endDate: DateTime.parse('2021-01-01'),
 );
+final data04 = Date(
+  message: 'birthday',
+  endDate: DateTime.parse('2020-01-24'),
+);
 
 final dataModel01 = DateModel(
   message: 'new year',

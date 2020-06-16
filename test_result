@@ -1,0 +1,48 @@
+00:00 +0: loading /Users/Limartinzj/Desktop/codebase/bloc/date_bloc/test/features/date/presentation/date_bloc_test.dart                                                                                00:01 +0: loading /Users/Limartinzj/Desktop/codebase/bloc/date_bloc/test/features/date/presentation/date_bloc_test.dart                                                                                00:02 +0: loading /Users/Limartinzj/Desktop/codebase/bloc/date_bloc/test/features/date/presentation/date_bloc_test.dart                                                                                00:02 +0: actual instance of dateBloc and its dependencies CreateDates should return DateInitial as a default state                                                                                    00:02 +1: actual instance of dateBloc and its dependencies CreateDates should return DateInitial as a default state                                                                                    00:02 +1: actual instance of dateBloc and its dependencies CreateDates should return [DateInitial, DateLoading, DateLoaded] when event is createEvent                                                  00:02 +1: actual instance of dateBloc and its dependencies CreateDates should return [DateInitial, DateLoading, DateLoaded] when event is createEvent                                                  
+Transition { currentState: DateInitial, event: CreateDate, nextState: DateLoading }
+Transition { currentState: DateLoading, event: CreateDate, nextState: DateLoaded: {[Date: {new year, 2021-01-01 00:00:00.000}]} }
+next line is return
+00:02 +2: actual instance of dateBloc and its dependencies CreateDates should return [DateInitial, DateLoading, DateLoaded] when event is createEvent                                                  00:02 +2: actual instance of dateBloc and its dependencies CreateDates should return when createEvent is added 2x                                                                                      00:02 +2: actual instance of dateBloc and its dependencies CreateDates should return when createEvent is added 2x                                                                                      
+Transition { currentState: DateInitial, event: CreateDate, nextState: DateLoading }
+Transition { currentState: DateLoading, event: CreateDate, nextState: DateLoaded: {[Date: {new year, 2021-01-01 00:00:00.000}]} }
+next line is return
+Transition { currentState: DateLoaded: {[Date: {new year, 2021-01-01 00:00:00.000}]}, event: CreateDate, nextState: DateLoading }
+Transition { currentState: DateLoading, event: CreateDate, nextState: DateLoaded: {[Date: {new year, 2021-01-01 00:00:00.000}, Date: {canada day, 2020-07-01 00:00:00.000}]} }
+next line is return
+00:02 +3: actual instance of dateBloc and its dependencies CreateDates should return when createEvent is added 2x                                                                                      00:02 +3: actual instance of dateBloc and its dependencies CreateDates should emits                                                                                                                    00:02 +3: actual instance of dateBloc and its dependencies CreateDates should emits                                                                                                                    
+Transition { currentState: DateInitial, event: CreateDate, nextState: DateLoading }
+Transition { currentState: DateLoading, event: CreateDate, nextState: DateLoaded: {[Date: {new year, 2021-01-01 00:00:00.000}]} }
+next line is return
+Transition { currentState: DateLoaded: {[Date: {new year, 2021-01-01 00:00:00.000}]}, event: CreateDate, nextState: DateLoading }
+Transition { currentState: DateLoading, event: CreateDate, nextState: DateLoaded: {[Date: {new year, 2021-01-01 00:00:00.000}, Date: {canada day, 2020-07-01 00:00:00.000}]} }
+next line is return
+00:02 +4: actual instance of dateBloc and its dependencies CreateDates should emits                                                                                                                    00:02 +4: actual instance of dateBloc and its dependencies GetDates, UpdateDate, DeleteDate should emits Initial, Loading, Loaded when event is GetDates                                               00:02 +4: actual instance of dateBloc and its dependencies GetDates, UpdateDate, DeleteDate should emits Initial, Loading, Loaded when event is GetDates                                               
+Transition { currentState: DateInitial, event: GetDates, nextState: DateLoading }
+Transition { currentState: DateLoading, event: GetDates, nextState: DateLoaded: {[Date: {new year, 2020-01-01 00:00:00.000}, Date: {canada day, 2020-07-01 00:00:00.000}]} }
+00:02 +5: actual instance of dateBloc and its dependencies GetDates, UpdateDate, DeleteDate should emits Initial, Loading, Loaded when event is GetDates                                               00:02 +5: actual instance of dateBloc and its dependencies GetDates, UpdateDate, DeleteDate should emit Initial, Loading, Loaded when event is UpdateDates                                             00:02 +5: actual instance of dateBloc and its dependencies GetDates, UpdateDate, DeleteDate should emit Initial, Loading, Loaded when event is UpdateDates                                             
+Transition { currentState: DateInitial, event: GetDates, nextState: DateLoading }
+Transition { currentState: DateLoading, event: GetDates, nextState: DateLoaded: {[Date: {new year, 2020-01-01 00:00:00.000}, Date: {canada day, 2020-07-01 00:00:00.000}]} }
+Transition { currentState: DateLoaded: {[Date: {new year, 2020-01-01 00:00:00.000}, Date: {canada day, 2020-07-01 00:00:00.000}]}, event: UpdateDate, nextState: DateLoading }
+[Date: {birthday, 2020-01-24 00:00:00.000}, Date: {canada day, 2020-07-01 00:00:00.000}]
+Transition { currentState: DateLoading, event: UpdateDate, nextState: DateLoaded: {[Date: {birthday, 2020-01-24 00:00:00.000}, Date: {canada day, 2020-07-01 00:00:00.000}]} }
+00:02 +5 -1: actual instance of dateBloc and its dependencies GetDates, UpdateDate, DeleteDate should emit Initial, Loading, Loaded when event is UpdateDates [E]                                      
+  Expected: [
+              DateInitial:DateInitial,
+              DateLoading:DateLoading,
+              DateLoaded:DateLoaded: {[Date: {new year, 2020-01-01 00:00:00.000}, Date: {canada day, 2020-07-01 00:00:00.000}]},
+              DateLoading:DateLoading,
+              DateLoaded:DateLoaded: {[Date: {new year, 2021-01-01 00:00:00.000}, Date: {canada day, 2020-07-01 00:00:00.000}]}
+            ]
+    Actual: [
+              DateInitial:DateInitial,
+              DateLoading:DateLoading,
+              DateLoaded:DateLoaded: {[Date: {new year, 2020-01-01 00:00:00.000}, Date: {canada day, 2020-07-01 00:00:00.000}]},
+              DateLoading:DateLoading,
+              DateLoaded:DateLoaded: {[Date: {birthday, 2020-01-24 00:00:00.000}, Date: {canada day, 2020-07-01 00:00:00.000}]}
+            ]
+     Which: was DateLoaded:<DateLoaded: {[Date: {birthday, 2020-01-24 00:00:00.000}, Date: {canada day, 2020-07-01 00:00:00.000}]}> instead of DateLoaded:<DateLoaded: {[Date: {new year, 2021-01-01 00:00:00.000}, Date: {canada day, 2020-07-01 00:00:00.000}]}> at location [4]
+  
+  package:test_api                               expect
+  package:bloc_test/src/emits_exactly.dart 66:3  emitsExactly
+  
+00:02 +5 -1: Some tests failed.                                                                                                                                                                        
