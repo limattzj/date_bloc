@@ -23,15 +23,16 @@ class DateBloc extends Bloc<DateEvent, DateState> {
     print(transition);
   }
 
-  @override
-  void onError(Object error, StackTrace stackTrace) {
-    super.onError(error, stackTrace);
-    print('$error, $stackTrace');
-  }
+  // @override
+  // void onError(Object error, StackTrace stackTrace) {
+  //   super.onError(error, stackTrace);
+  //   print('$error, $stackTrace');
+  // }
 
   @override
   Stream<DateState> mapEventToState(DateEvent event) async* {
     // Add Date
+    // TODO: what to do if the event is the same???
     if (event is CreateDate) {
       List<Date> results = [];
       yield DateLoading();

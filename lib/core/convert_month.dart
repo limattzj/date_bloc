@@ -30,3 +30,12 @@ String getMonth(int month) {
       throw InvalidEntry('Invalid input of month');
   }
 }
+
+String parseDate(int input) {
+  // add fail/safe for input <= 0
+  if (input < 10) {
+    return '0$input';
+  } else {
+    return '$input';
+  }
+}

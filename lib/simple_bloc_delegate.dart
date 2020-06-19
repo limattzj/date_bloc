@@ -7,11 +7,11 @@ class SimpleBlocDelegate extends BlocDelegate {
     print(event);
   }
 
-  @override
-  void onTransition(Bloc bloc, Transition transition) {
-    super.onTransition(bloc, transition);
-    print(transition);
-  }
+  // @override
+  // void onTransition(Bloc bloc, Transition transition) {
+  //   super.onTransition(bloc, transition);
+  //   print(transition);
+  // }
 
   @override
   void onError(Bloc bloc, Object error, StackTrace stackTrace) {
