@@ -46,23 +46,31 @@ class DateControllerBody extends StatefulWidget {
 }
 
 class _DateControllerBodyState extends State<DateControllerBody> {
-  bool isEditingTitle = false;
-  bool isEditingDateAndTime = false;
+  // controller for textfield
   final controller = TextEditingController();
-  DateTime dateTimeEntry;
   // a custom FocusNode for keyboard
   final node = FocusNode();
+  DateTime dateTimeEntry;
   String titleLabel = '';
   String dateAndTime = '';
+  bool isEditingTitle = false;
+  bool isEditingDateAndTime = false;
+  bool get _tapCondtion {
+    if ((titleLabel.isNotEmpty) & (dateTimeEntry != null)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   @override
   void initState() {
     controller.addListener(() {
-      print('text controller: {${controller.text}}');
+      print('text controller: ${controller.text}');
     });
 
     node.addListener(() {
-      print('node: {${node.hasFocus}}');
+      print('node ${node.hasFocus}');
     });
     super.initState();
   }
@@ -144,8 +152,13 @@ class _DateControllerBodyState extends State<DateControllerBody> {
                     // date & time label
                     GestureDetector(
                       onTap: () {
-                        node.unfocus();
+                        dateTimeEntry == null
+                            ? dateTimeEntry = DateTime.now()
+                            : dateTimeEntry;
+                        print('dateTimeEntry: ${dateTimeEntry}');
+                        print('dateAndTime: ${dateAndTime}');
                         setState(() {
+                          isEditingTitle = false;
                           isEditingDateAndTime = !isEditingDateAndTime;
                         });
                       },
@@ -167,9 +180,7 @@ class _DateControllerBodyState extends State<DateControllerBody> {
                         height: 150.0,
                         child: DatePickerWidget(
                           dateFormat: 'dd-MMMM-yyyy',
-                          initialDateTime: dateTimeEntry == null
-                              ? DateTime.now()
-                              : dateTimeEntry,
+                          initialDateTime: dateTimeEntry,
                           onMonthChangeStartWithFirstDate: false,
                           pickerTheme: DateTimePickerTheme(
                             showTitle: false,
@@ -192,9 +203,11 @@ class _DateControllerBodyState extends State<DateControllerBody> {
                         ),
                       ),
                     ),
+
                     SizedBox(
                       height: 30,
                     ),
+
                     Row(
                       children: <Widget>[
                         Icon(Icons.photo_camera),
@@ -203,22 +216,27 @@ class _DateControllerBodyState extends State<DateControllerBody> {
                         ),
                         Text('Edit Photo'),
                       ],
-                    )
+                    ),
                   ],
                 ),
               ),
             ),
+
             // TODO: animate the effects when a button is tapped
-            // TODO: the button is disabled when [dateTimeEntry] or [titleLabel] is null
+
             GestureDetector(
-              onTap: () {
-                BlocProvider.of<DateBloc>(context).add(
-                  CreateDate(
-                    message: titleLabel,
-                    date: dateTimeEntry,
-                  ),
-                );
-              },
+              // the button is disabled when [dateTimeEntry] or [titleLabel] is null
+              onTap: _tapCondtion
+                  ? () {
+                      BlocProvider.of<DateBloc>(context).add(
+                        CreateDate(
+                          message: controller.text,
+                          date: dateTimeEntry,
+                        ),
+                      );
+                      Navigator.pop(context);
+                    }
+                  : null,
               child: Container(
                 width: MediaQuery.of(context).size.width,
                 height: 100,

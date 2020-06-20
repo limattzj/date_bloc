@@ -12,6 +12,13 @@ class MyHomeScreen extends StatelessWidget {
         preferredSize: Size.fromHeight(44.0),
         child: AppBar(
           elevation: 0,
+          //a clear all event in IconButton for testing purpose
+          leading: IconButton(
+            icon: Icon(Icons.refresh),
+            onPressed: () {
+              BlocProvider.of<DateBloc>(context).add(ClearDates());
+            },
+          ),
           title: Text('Days Clock'),
           actions: <Widget>[
             IconButton(
@@ -35,7 +42,9 @@ class MyHomeScreen extends StatelessWidget {
         if (state is DateLoaded) {
           return ListView.separated(
             itemBuilder: (context, index) {
-              return Container();
+              return Container(
+                child: Text('${state.dates[index]}'),
+              );
             },
             separatorBuilder: (context, index) => Divider(),
             itemCount: state.dates.length,

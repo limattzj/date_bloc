@@ -32,7 +32,6 @@ class DateBloc extends Bloc<DateEvent, DateState> {
   @override
   Stream<DateState> mapEventToState(DateEvent event) async* {
     // Add Date
-    // TODO: what to do if the event is the same???
     if (event is CreateDate) {
       List<Date> results = [];
       yield DateLoading();
@@ -91,6 +90,14 @@ class DateBloc extends Bloc<DateEvent, DateState> {
       yield await repo.addDates(results)
           ? DateLoaded(results)
           : DateError(message: 'Failed to cache data');
+    }
+
+    if (event is ClearDates) {
+      List<Date> results = [];
+      yield DateLoading();
+      yield await repo.addDates(results)
+          ? DateLoaded(results)
+          : DateError(message: 'ClearDates: {"failed to cache dates"');
     }
   }
 }

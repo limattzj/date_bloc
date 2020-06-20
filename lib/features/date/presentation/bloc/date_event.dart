@@ -10,6 +10,10 @@ class GetDates extends DateEvent {
   const GetDates();
 }
 
+class ClearDates extends DateEvent {
+  const ClearDates();
+}
+
 class CreateDate extends DateEvent {
   final String message;
   final DateTime date;
