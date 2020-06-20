@@ -42,8 +42,26 @@ class MyHomeScreen extends StatelessWidget {
         if (state is DateLoaded) {
           return ListView.separated(
             itemBuilder: (context, index) {
-              return Container(
-                child: Text('${state.dates[index]}'),
+              return Dismissible(
+                background: Container(color: Colors.red),
+                key: Key(state.dates[index].message),
+                onDismissed: (direction) {
+                  BlocProvider.of<DateBloc>(context)
+                      .add(DeleteDate(index: index));
+                },
+                child: Container(
+                  child: Row(
+                    children: <Widget>[
+                      // TODO: How to make these tick?
+                      // TODO: Edit/Update Date
+                      Text('${state.dates[index].message}  '),
+                      Text('${state.dates[index].daysDifference} D '),
+                      Text('${state.dates[index].hoursDifference} H '),
+                      Text('${state.dates[index].minutesDifference} M '),
+                      Text('${state.dates[index].secondsDifference} S'),
+                    ],
+                  ),
+                ),
               );
             },
             separatorBuilder: (context, index) => Divider(),

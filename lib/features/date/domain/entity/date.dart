@@ -8,17 +8,17 @@ class Date extends Equatable {
 
   /// return substring of [seconds] from findRemaining()
   int get secondsDifference {
-    return int.parse(hoursLeft().toString().substring(5, 7));
+    return int.parse(hoursLeft().toString().substring(6, 8));
   }
 
   /// return substring of [minutes] from findRemaining()
   int get minutesDifference {
-    return int.parse(hoursLeft().toString().substring(2, 4));
+    return int.parse(hoursLeft().toString().substring(3, 5));
   }
 
   /// return substring of [hours] from findRemaining()
   int get hoursDifference {
-    return int.parse(hoursLeft().toString().substring(0, 1));
+    return int.parse(hoursLeft().toString().substring(0, 2));
   }
 
   /// return the number of days between [now] and [endDate]

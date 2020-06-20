@@ -158,6 +158,7 @@ class _DateControllerBodyState extends State<DateControllerBody> {
                         print('dateTimeEntry: ${dateTimeEntry}');
                         print('dateAndTime: ${dateAndTime}');
                         setState(() {
+                          titleLabel = controller.text;
                           isEditingTitle = false;
                           isEditingDateAndTime = !isEditingDateAndTime;
                         });
