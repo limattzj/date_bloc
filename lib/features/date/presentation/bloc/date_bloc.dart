@@ -83,6 +83,7 @@ class DateBloc extends Bloc<DateEvent, DateState> {
       if (results.isNotEmpty) {
         Date newEntry = Date(message: event.message, endDate: event.date);
         // we update the old entry with new
+        print(event.index);
         results[event.index] = newEntry;
         print(results);
       }

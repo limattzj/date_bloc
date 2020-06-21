@@ -6,6 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class MyHomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final dateBloc = BlocProvider.of<DateBloc>(context);
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: PreferredSize(
@@ -24,13 +26,16 @@ class MyHomeScreen extends StatelessWidget {
             IconButton(
               icon: Icon(Icons.add),
               onPressed: () {
-                final dateBloc = BlocProvider.of<DateBloc>(context);
                 Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => BlocProvider.value(
                         value: dateBloc,
-                        child: DateControllerScreen(),
+                        child: DateControllerScreen(
+                          message: null,
+                          date: null,
+                          index: null,
+                        ),
                       ),
                     ));
               },
@@ -49,17 +54,27 @@ class MyHomeScreen extends StatelessWidget {
                   BlocProvider.of<DateBloc>(context)
                       .add(DeleteDate(index: index));
                 },
-                child: Container(
-                  child: Row(
-                    children: <Widget>[
-                      // TODO: How to make these tick?
-                      // TODO: Edit/Update Date
-                      Text('${state.dates[index].message}  '),
-                      Text('${state.dates[index].daysDifference} D '),
-                      Text('${state.dates[index].hoursDifference} H '),
-                      Text('${state.dates[index].minutesDifference} M '),
-                      Text('${state.dates[index].secondsDifference} S'),
-                    ],
+                child: GestureDetector(
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => BlocProvider.value(
+                        value: dateBloc,
+                        child: DateControllerScreen(
+                          message: state.dates[index].message,
+                          date: state.dates[index].endDate,
+                          index: index,
+                        ),
+                      ),
+                    ),
+                  ),
+                  child: Container(
+                    child: Row(
+                      children: <Widget>[
+                        // TODO: How to make these tick?
+                        Text('${state.dates[index]}'),
+                      ],
+                    ),
                   ),
                 ),
               );

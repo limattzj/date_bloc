@@ -7,13 +7,13 @@ abstract class DateState extends Equatable {
 class DateInitial extends DateState {
   const DateInitial();
   @override
-  List<Object> get props => [];
+  List<Date> get props => [];
 }
 
 class DateLoading extends DateState {
   const DateLoading();
   @override
-  List<Object> get props => [];
+  List<Date> get props => [];
 }
 
 class DateLoaded extends DateState {
@@ -26,6 +26,8 @@ class DateLoaded extends DateState {
     return 'DateLoaded: {$dates}';
   }
 
+  // @override
+  // List<Object> get props => dates;
   @override
   List<Object> get props {
     final List<Map> results = [];

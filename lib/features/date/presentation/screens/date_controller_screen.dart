@@ -1,12 +1,25 @@
+import 'dart:convert';
+import 'package:date_bloc/features/date/domain/entity/date.dart';
+import 'package:meta/meta.dart';
 import 'package:date_bloc/core/convert_month.dart';
 import 'package:date_bloc/features/date/presentation/bloc/date_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cupertino_date_picker/flutter_cupertino_date_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'custom_painter.dart';
 
 class DateControllerScreen extends StatelessWidget {
+  final String message;
+  final DateTime date;
+  final int index;
+
+  const DateControllerScreen({
+    Key key,
+    @required this.message,
+    @required this.date,
+    @required this.index,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,12 +48,26 @@ class DateControllerScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: DateControllerBody(),
+      body: DateControllerBody(
+        message: message,
+        date: date,
+        index: index,
+      ),
     );
   }
 }
 
 class DateControllerBody extends StatefulWidget {
+  final String message;
+  final DateTime date;
+  final int index;
+
+  const DateControllerBody({
+    Key key,
+    @required this.message,
+    @required this.date,
+    @required this.index,
+  }) : super(key: key);
   @override
   _DateControllerBodyState createState() => _DateControllerBodyState();
 }
@@ -51,10 +78,15 @@ class _DateControllerBodyState extends State<DateControllerBody> {
   // a custom FocusNode for keyboard
   final node = FocusNode();
   DateTime dateTimeEntry;
-  String titleLabel = '';
-  String dateAndTime = '';
+  // display title and dateTime on screen
+  String titleLabel;
+  String dateAndTime;
+  // these two controls the visibility of textfield and dateTimePicker
   bool isEditingTitle = false;
   bool isEditingDateAndTime = false;
+  // determines whether creating a new event or updating an old event
+  bool isCreateDateEvent;
+  // this boolean value is used to contorl SAVE button
   bool get _tapCondtion {
     if ((titleLabel.isNotEmpty) & (dateTimeEntry != null)) {
       return true;
@@ -64,13 +96,33 @@ class _DateControllerBodyState extends State<DateControllerBody> {
   }
 
   @override
+
+  // if we are CREATING a new event, all of [titleLabel], [controller.text],
+  // [dateAndTime], [dateTimeEntry] will be set to empty.
+  // if we are UPDATING an existing event, all of [titleLabel], [controller.text],
+  // [dateAndTime], [dateTimeEntry] will be set to the value that is passed in.
+  void didChangeDependencies() {
+    isCreateDateEvent = widget.date == null ? true : false;
+    if (isCreateDateEvent) {
+      print('we are CREATING a new event');
+    } else {
+      print('we are UPDATING an old event');
+    }
+    titleLabel = isCreateDateEvent ? '' : widget.message;
+    controller.text = titleLabel;
+    dateAndTime = isCreateDateEvent ? '' : widget.date.toString();
+    dateTimeEntry = isCreateDateEvent ? DateTime.now() : widget.date;
+    super.didChangeDependencies();
+  }
+
+  @override
   void initState() {
     controller.addListener(() {
       print('text controller: ${controller.text}');
     });
 
     node.addListener(() {
-      print('node ${node.hasFocus}');
+      print('node becomes ${node.hasFocus}');
     });
     super.initState();
   }
@@ -152,13 +204,14 @@ class _DateControllerBodyState extends State<DateControllerBody> {
                     // date & time label
                     GestureDetector(
                       onTap: () {
-                        dateTimeEntry == null
-                            ? dateTimeEntry = DateTime.now()
-                            : dateTimeEntry;
                         print('dateTimeEntry: ${dateTimeEntry}');
                         print('dateAndTime: ${dateAndTime}');
                         setState(() {
-                          titleLabel = controller.text;
+                          print('controller text: ${controller.text}');
+                          if (controller.text.isNotEmpty) {
+                            titleLabel = controller.text;
+                          }
+
                           isEditingTitle = false;
                           isEditingDateAndTime = !isEditingDateAndTime;
                         });
@@ -229,13 +282,25 @@ class _DateControllerBodyState extends State<DateControllerBody> {
               // the button is disabled when [dateTimeEntry] or [titleLabel] is null
               onTap: _tapCondtion
                   ? () {
-                      BlocProvider.of<DateBloc>(context).add(
-                        CreateDate(
-                          message: controller.text,
-                          date: dateTimeEntry,
-                        ),
-                      );
-                      Navigator.pop(context);
+                      if (isCreateDateEvent) {
+                        BlocProvider.of<DateBloc>(context).add(
+                          CreateDate(
+                            message: controller.text,
+                            date: dateTimeEntry,
+                          ),
+                        );
+                        Navigator.pop(context);
+                      } else {
+                        print('${widget}: ${widget.index}');
+                        BlocProvider.of<DateBloc>(context).add(
+                          UpdateDate(
+                            message: controller.text,
+                            date: dateTimeEntry,
+                            index: widget.index,
+                          ),
+                        );
+                        Navigator.pop(context);
+                      }
                     }
                   : null,
               child: Container(
