@@ -81,11 +81,23 @@ void main() {
       expect(result, expected);
     });
 
+    test('should return how many hours left in different format', () async {
+      // arrange
+      final input = DateTime.parse('2020-01-01 18:00:00');
+      final expected = Duration(hours: 6);
+      final result = date.hoursLeft(input: input);
+      debugPrint('$result');
+      // act
+      // assert
+      expect(result, expected);
+    });
+
     test('should return how many hours left of today', () async {
       // act
       final result = date.hoursLeft();
       // assert
-      debugPrint(result.toString());
+      debugPrint('$result');
+      debugPrint('${result.runtimeType}');
     });
   });
 
@@ -97,10 +109,13 @@ void main() {
       // arrange
       final input = DateTime.parse('2020-01-03 13:00:00');
       final expected = Duration(hours: 13);
+      final expectedDaysDifference = 2;
       // act
       final result = date.hoursPassed(input: input);
+      final daysDifference = date.getDaysDifference(date.endDate, input);
       // assert
       expect(result, expected);
+      expect(daysDifference, expectedDaysDifference);
     });
 
     test('should return how many hours already passed', () async {
@@ -117,6 +132,7 @@ void main() {
       final result = date.hoursPassed();
       // assert
       debugPrint(result.toString());
+      debugPrint(date.hoursPassed().toString());
     });
   });
 }

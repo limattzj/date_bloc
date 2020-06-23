@@ -1,5 +1,20 @@
-import 'package:date_bloc/core/failure.dart';
+import 'failure.dart';
 
+String parseDate(int input) {
+  // add fail/safe for input <= 0
+  return input < 10 ? '0$input' : '$input';
+}
+
+/// return yyyy-mm-dd 00:00:000 of given DateTime with hours
+DateTime processDateTime(DateTime input) {
+  String _year = input.year.toString();
+  String _month = parseDate(input.month);
+  String _day = parseDate(input.day);
+  DateTime _result = DateTime.parse('$_year$_month$_day');
+  return _result;
+}
+
+/// convert numeric [month] to String format
 String getMonth(int month) {
   switch (month) {
     case 1:
@@ -28,14 +43,5 @@ String getMonth(int month) {
       return 'Dec';
     default:
       throw InvalidEntry('Invalid input of month');
-  }
-}
-
-String parseDate(int input) {
-  // add fail/safe for input <= 0
-  if (input < 10) {
-    return '0$input';
-  } else {
-    return '$input';
   }
 }

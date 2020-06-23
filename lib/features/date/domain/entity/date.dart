@@ -1,3 +1,4 @@
+import 'package:date_bloc/core/process_date.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
@@ -43,17 +44,19 @@ class Date extends Equatable {
 
   /// return the number of days between x & y dates
   int getDaysDifference(DateTime x, DateTime y) {
-    // what if the year is a leap year???
-    var _result = (x.difference(y).inHours / 24).round().abs();
+    // process the input so that only consider the year-month-day for
+    // both x and y
+
+    DateTime _x = processDateTime(x);
+    DateTime _y = processDateTime(y);
+    var _result = (_x.difference(_y).inHours / 24).round().abs();
     return _result;
   }
 
   /// return a DateTime object that contains 00:00:00 of next day of the input
   DateTime findNextDay(DateTime input) {
-    String year = input.year.toString();
-    String month = input.month < 10 ? '0${input.month}' : '${input.month}';
-    String day = input.day < 10 ? '0${input.day}' : '${input.day}';
-    return DateTime.parse('$year-$month-$day').add(Duration(days: 1));
+    DateTime _input = processDateTime(input);
+    return _input.add(Duration(days: 1));
   }
 
   @override
