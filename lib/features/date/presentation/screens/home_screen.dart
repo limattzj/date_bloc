@@ -12,16 +12,16 @@ class MyHomeScreen extends StatefulWidget {
 }
 
 class _MyHomeScreenState extends State<MyHomeScreen> {
-  int count = 0;
-  Timer timer;
+  Timer _timer;
   @override
   void initState() {
     super.initState();
-    Timer.periodic(Duration(seconds: 1), (timer) {
+    // this control the seconds refresh for the display
+    Timer.periodic(Duration(seconds: 1), (_timer) {
       if (this.mounted) {
         setState(() {});
       } else {
-        timer.cancel();
+        _timer.cancel();
       }
     });
   }
@@ -29,7 +29,7 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
   @override
   void dispose() {
     super.dispose();
-    timer.cancel();
+    _timer.cancel();
   }
 
   @override
