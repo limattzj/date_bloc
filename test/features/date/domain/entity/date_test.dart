@@ -162,13 +162,13 @@ void main() {
     test('should return how many hours already passed', () async {
       // arrange
       final input = DateTime.parse('2020-01-03 21:34:00');
-      final expected = Duration(hours: 21, minutes: 34);
+      final expected = Duration(hours: 21, minutes: 34, seconds: 0);
       // act
       final result = date.hoursPassed(input: input);
       // assert
       expect(result, expected);
     });
-    test('should return how many hours left of today', () async {
+    test('should return how many hours already passed', () async {
       // act
       final result = date.hoursPassed();
       // assert
