@@ -17,10 +17,8 @@ class Date extends Equatable {
   int get secondsDifference {
     var _secondsLeft =
         hoursLeft().inSeconds - hoursDifference * 3600 - minutesDifference * 60;
-    var _secondsPassed = hoursPassed().inSeconds -
-        hoursDifference * 3600 -
-        minutesDifference * 60;
-    return isAfter ? _secondsLeft : _secondsPassed;
+    var _secondsPassed = 60 - _secondsLeft;
+    return isAfter ? _secondsPassed : _secondsLeft;
   }
 
   /// return substring of [minutes] from findRemaining()

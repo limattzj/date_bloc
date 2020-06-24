@@ -1,3 +1,4 @@
+import 'package:date_bloc/features/date/domain/entity/date.dart';
 import 'package:date_bloc/features/date/presentation/bloc/date_bloc.dart';
 import 'package:date_bloc/features/date/presentation/screens/date_controller_screen.dart';
 import 'package:flutter/material.dart';
@@ -43,48 +44,67 @@ class MyHomeScreen extends StatelessWidget {
           ],
         ),
       ),
-      body: BlocBuilder<DateBloc, DateState>(builder: (context, state) {
-        if (state is DateLoaded) {
-          return ListView.separated(
-            itemBuilder: (context, index) {
-              return Dismissible(
-                background: Container(color: Colors.red),
-                key: Key(state.dates[index].message),
-                onDismissed: (direction) {
-                  BlocProvider.of<DateBloc>(context)
-                      .add(DeleteDate(index: index));
-                },
-                child: GestureDetector(
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => BlocProvider.value(
-                        value: dateBloc,
-                        child: DateControllerScreen(
-                          message: state.dates[index].message,
-                          date: state.dates[index].endDate,
-                          index: index,
+      body: BlocBuilder<DateBloc, DateState>(
+        builder: (context, state) {
+          if (state is DateLoaded) {
+            return ListView.separated(
+              itemBuilder: (context, index) {
+                return Dismissible(
+                  background: Container(color: Colors.red),
+                  key: Key(state.dates[index].message),
+                  onDismissed: (direction) {
+                    BlocProvider.of<DateBloc>(context)
+                        .add(DeleteDate(index: index));
+                  },
+                  child: GestureDetector(
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => BlocProvider.value(
+                          value: dateBloc,
+                          child: DateControllerScreen(
+                            message: state.dates[index].message,
+                            date: state.dates[index].endDate,
+                            index: index,
+                          ),
                         ),
                       ),
                     ),
+                    child: DateContainer(date: state.dates[index]),
                   ),
-                  child: Container(
-                    child: Row(
-                      children: <Widget>[
-                        // TODO: How to make these tick?
-                        Text('${state.dates[index]}'),
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            },
-            separatorBuilder: (context, index) => Divider(),
-            itemCount: state.dates.length,
-          );
-        }
-        return Center(child: CircularProgressIndicator());
-      }),
+                );
+              },
+              separatorBuilder: (context, index) => Divider(),
+              itemCount: state.dates.length,
+            );
+          }
+          return Center(child: CircularProgressIndicator());
+        },
+      ),
+    );
+  }
+}
+
+class DateContainer extends StatelessWidget {
+  final Date date;
+
+  const DateContainer({
+    Key key,
+    @required this.date,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Row(
+        children: <Widget>[
+          // TODO: How to make these tick?
+          Text('${date.daysDifference()} :'),
+          Text('${date.hoursDifference} :'),
+          Text('${date.minutesDifference} :'),
+          Text('${date.secondsDifference}'),
+        ],
+      ),
     );
   }
 }
