@@ -55,23 +55,22 @@ class Date extends Equatable {
   }
 
   /// return the number of days between x & y dates
-  static int getDaysDifference(DateTime now, DateTime y) {
+  static int getDaysDifference(DateTime now, DateTime targetDate) {
     // process the input so that only consider the year-month-day for
     // both x and y
     int _result;
     DateTime _now;
-    if (y.isAfter(now)) {
+    if (targetDate.isAfter(now)) {
       if (now.hour > 0 || now.minute > 0 || now.second > 0) {
         _now = findNextDay(now);
       } else {
         _now = findToday(now);
       }
-
-      DateTime _y = findToday(y);
+      DateTime _y = findToday(targetDate);
       _result = (_now.difference(_y).inHours / 24).round().abs();
     } else {
       DateTime _now = findToday(now);
-      DateTime _y = findToday(y);
+      DateTime _y = findToday(targetDate);
       _result = (_now.difference(_y).inHours / 24).round().abs();
     }
 
