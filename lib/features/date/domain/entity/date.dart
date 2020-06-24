@@ -5,58 +5,95 @@ import 'package:meta/meta.dart';
 class Date extends Equatable {
   final String message;
   final DateTime endDate;
+
   const Date({@required this.message, @required this.endDate});
+
+  bool get isAfter {
+    return DateTime.now().isAfter(endDate);
+  }
 
   /// return substring of [seconds] from findRemaining()
   int get secondsDifference {
-    return int.parse(hoursLeft().toString().substring(6, 8));
+    var _result =
+        hoursLeft().inSeconds - hoursDifference * 3600 - minutesDifference * 60;
+    return _result;
   }
 
   /// return substring of [minutes] from findRemaining()
   int get minutesDifference {
-    return int.parse(hoursLeft().toString().substring(3, 5));
+    var _minutesLeft = hoursLeft().inMinutes - hoursDifference * 60;
+    var _minutesPassed = hoursPassed().inMinutes - hoursDifference * 60;
+    var _result = isAfter ? _minutesPassed : _minutesLeft;
+
+    return _result;
   }
 
   /// return substring of [hours] from findRemaining()
   int get hoursDifference {
-    return int.parse(hoursLeft().toString().substring(0, 2));
+    var _result = isAfter ? hoursPassed().inHours : hoursLeft().inHours;
+    return _result;
   }
 
   /// return the number of days between [now] and [endDate]
-  int get daysDifference {
-    return getDaysDifference(findNextDay(DateTime.now()), endDate);
+  int daysDifference() {
+    return getDaysDifference(DateTime.now(), endDate);
   }
 
   /// return a Duration of HH:MM:SS of time that already has passed
   Duration hoursPassed({DateTime input}) {
     input ??= DateTime.now();
-    return Duration(hours: 24) - hoursLeft(input: input);
+    return Duration(hours: 24) - hoursLeft(startDate: input);
   }
 
   /// return a Duration of HH:MM:SS remaining until the end of day
-  Duration hoursLeft({DateTime input}) {
+  Duration hoursLeft({DateTime startDate}) {
     // if input is null, then input is assigned to DateTime.now()
-    input ??= DateTime.now();
-    final nextDay = findNextDay(input);
-    Duration remaining = nextDay.difference(input);
+    startDate ??= DateTime.now();
+    final nextDay = findNextDay(startDate);
+    Duration remaining = nextDay.difference(startDate);
     return remaining;
   }
 
   /// return the number of days between x & y dates
-  int getDaysDifference(DateTime x, DateTime y) {
+  static int getDaysDifference(DateTime now, DateTime y) {
     // process the input so that only consider the year-month-day for
     // both x and y
+    int _result;
+    DateTime _now;
+    if (y.isAfter(now)) {
+      if (now.hour > 0 || now.minute > 0 || now.second > 0) {
+        _now = findNextDay(now);
+      } else {
+        _now = findToday(now);
+      }
 
-    DateTime _x = processDateTime(x);
-    DateTime _y = processDateTime(y);
-    var _result = (_x.difference(_y).inHours / 24).round().abs();
+      DateTime _y = findToday(y);
+      _result = (_now.difference(_y).inHours / 24).round().abs();
+    } else {
+      DateTime _now = findToday(now);
+      DateTime _y = findToday(y);
+      _result = (_now.difference(_y).inHours / 24).round().abs();
+    }
+
+    print('result: $_result');
+
     return _result;
   }
 
   /// return a DateTime object that contains 00:00:00 of next day of the input
-  DateTime findNextDay(DateTime input) {
-    DateTime _input = processDateTime(input);
+  static DateTime findNextDay(DateTime input) {
+    DateTime _input = findToday(input);
     return _input.add(Duration(days: 1));
+  }
+
+  /// return yyyy-mm-dd 00:00:000 of given DateTime of the input
+  static DateTime findToday(DateTime input) {
+    String _year = input.year.toString();
+    String _month = parseDate(input.month);
+    String _day = parseDate(input.day);
+    DateTime _result = DateTime.parse('$_year$_month$_day');
+
+    return _result;
   }
 
   @override

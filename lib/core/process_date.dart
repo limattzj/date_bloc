@@ -5,15 +5,6 @@ String parseDate(int input) {
   return input < 10 ? '0$input' : '$input';
 }
 
-/// return yyyy-mm-dd 00:00:000 of given DateTime with hours
-DateTime processDateTime(DateTime input) {
-  String _year = input.year.toString();
-  String _month = parseDate(input.month);
-  String _day = parseDate(input.day);
-  DateTime _result = DateTime.parse('$_year$_month$_day');
-  return _result;
-}
-
 /// convert numeric [month] to String format
 String getMonth(int month) {
   switch (month) {
