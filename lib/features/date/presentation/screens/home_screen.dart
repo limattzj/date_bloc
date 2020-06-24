@@ -1,10 +1,37 @@
+import 'dart:async';
+
 import 'package:date_bloc/features/date/domain/entity/date.dart';
 import 'package:date_bloc/features/date/presentation/bloc/date_bloc.dart';
 import 'package:date_bloc/features/date/presentation/screens/date_controller_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class MyHomeScreen extends StatelessWidget {
+class MyHomeScreen extends StatefulWidget {
+  @override
+  _MyHomeScreenState createState() => _MyHomeScreenState();
+}
+
+class _MyHomeScreenState extends State<MyHomeScreen> {
+  int count = 0;
+  Timer timer;
+  @override
+  void initState() {
+    super.initState();
+    Timer.periodic(Duration(seconds: 1), (timer) {
+      if (this.mounted) {
+        setState(() {});
+      } else {
+        timer.cancel();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    timer.cancel();
+  }
+
   @override
   Widget build(BuildContext context) {
     final dateBloc = BlocProvider.of<DateBloc>(context);
@@ -96,13 +123,18 @@ class DateContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Row(
+      child: Column(
         children: <Widget>[
-          // TODO: How to make these tick?
-          Text('${date.daysDifference()} :'),
-          Text('${date.hoursDifference} :'),
-          Text('${date.minutesDifference} :'),
-          Text('${date.secondsDifference}'),
+          Text('${date.message}'),
+          Row(
+            children: <Widget>[
+              // TODO: How to make these tick?
+              Text('${date.daysDifference()} :'),
+              Text('${date.hoursDifference} :'),
+              Text('${date.minutesDifference} :'),
+              Text('${date.secondsDifference}'),
+            ],
+          ),
         ],
       ),
     );
