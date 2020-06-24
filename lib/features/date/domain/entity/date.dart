@@ -15,12 +15,15 @@ class Date extends Equatable {
 
   /// return substring of [seconds] from findRemaining()
   int get secondsDifference {
-    var _secondsLeft =
-        hoursLeft().inSeconds - hoursDifference * 3600 - minutesDifference * 60;
-    var _secondsPassed = hoursPassed().inSeconds -
-        hoursDifference * 3600 -
-        minutesDifference * 60;
-    return isAfter ? _secondsLeft : _secondsPassed;
+    var _secondsLeft = (hoursLeft().inSeconds) -
+        (hoursDifference * 3600).abs() -
+        (minutesDifference * 60).abs() +
+        1;
+    var _secondsPassed = (hoursPassed().inSeconds) -
+        (hoursDifference * 3600).abs() -
+        (minutesDifference * 60).abs();
+    ;
+    return isAfter ? _secondsPassed : _secondsLeft;
   }
 
   /// return substring of [minutes] from findRemaining()
@@ -78,7 +81,7 @@ class Date extends Equatable {
       _result = (_now.difference(_y).inHours / 24).round().abs();
     }
 
-    debugPrint('result: $_result');
+    // debugPrint('result: $_result');
     return _result;
   }
 
