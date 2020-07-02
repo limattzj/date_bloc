@@ -11,9 +11,8 @@ part 'date_state.dart';
 class DateBloc extends Bloc<DateEvent, DateState> {
   final DateRepository repo;
 
-  DateBloc({@required this.repo});
+  DateBloc({@required this.repo}) : super(const DateInitial());
 
-  @override
   DateState get initialState => const DateInitial();
 
   // for debugging
